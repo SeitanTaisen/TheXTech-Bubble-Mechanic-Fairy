@@ -31,6 +31,8 @@
 #include "config.h"
 #include "core/render.h"
 
+#include "ghost_mode.h"
+
 void SetScreenType(Screen_t& screen)
 {
     if(!screen.is_active())
@@ -608,6 +610,13 @@ void CenterScreens()
         Screen_t& screen = Screens[i];
         CenterScreens(screen);
     }
+    // keep ghost logic calls at the very end
+    Ghost_CheckOutOfBounds();
+
+    // NEW: let players self-ghost on the 4-button chord (with last-player safety)
+    Ghost_SelfGhostByButtons();
+
+    Ghost_TouchRevive();
 }
 
 // NEW: moves qScreen towards vScreen, now including the screen size
